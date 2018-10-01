@@ -68,7 +68,7 @@ namespace SPR.Jobs
                 mail.Attachments.Add(new Attachment("charts\\mockChart.jpg"));
 
                 SmtpClient.Port = 587;
-                SmtpClient.Credentials = new System.Net.NetworkCredential("xamorach@gmail.com", "Mesopotamia82!");
+                SmtpClient.Credentials = new System.Net.NetworkCredential("blablabla@bla.com", "CHangeFoRRealPass");
                 SmtpClient.EnableSsl = true;
 
                 SmtpClient.Send(mail);
