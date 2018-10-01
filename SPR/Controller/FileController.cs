@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SPR.Model;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -49,6 +51,44 @@ namespace SPR.Controller
                 fos.Dispose();
             }
             return str;
+        }
+
+        /// <summary>
+        /// Reads the list of emails from the emailsFile
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> ReadEmailList()
+        {
+           List<string> emailList = new List<string>();
+           string[] textLines = File.ReadAllLines(@"c:\\testEmailsFile.csv");  //TODO: Change for real file with real emails
+
+           foreach (var item in textLines)
+           {
+               if (IsValidEmail(item))
+               {
+                   emailList.Add(item);
+               }
+               else 
+               {
+                    Console.WriteLine(writeDataIntoALog("The email " + item.ToString() + " is no  a valid email." +
+                        "Please check the email located in the emails file", fileStr));
+               }
+           }
+           return emailList;
+        }
+
+
+        private static bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
     }

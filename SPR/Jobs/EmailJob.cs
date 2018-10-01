@@ -24,34 +24,28 @@ namespace SPR.Jobs
             Console.WriteLine(FileController.writeDataIntoALog("SERVICE HAS BEEN LAUNCHED", FileController.fileStr));
             Console.WriteLine(FileController.writeDataIntoALog("SENDING MAILS...", FileController.fileStr));
             Console.ResetColor();
-            #endregion end Test
+            #endregion end Test   
 
-            List<Email> EmailsList = new List<Email>();
-
-            Email a1 = new Email("xamorach@gmail.com", "This is the last server usage report", "Test Mail Chart", "Javier", "Mora", "Chacón,", "486", "1024", "512", "89");
-            Email a2 = new Email("javier.mora@dxcfds.com", "This is the last server usage report", "Test Mail Chart", "Jhon", "Doe", "Wayne", "486", "1024", "512", "89");
-            Email a3 = new Email("azumimi@gmail.com", "Miriam", "This is the last server usage report", "Test Mail Chart", "Constanti", "Labella", "486", "1024", "512", "89");
-            Email a4 = new Email("cchaconcubero@gmail.com", "This is the last server usage report", "Test Mail Chart", "Carmen", "Chacón", "Cubero", "486", "1024", "512", "89");
-            Email a5 = new Email("purificacionchacon47@gmail.com", "This is the last server usage report", "Test Mail Chart", "Purificación", "Chacón", "Cubero", "486", "1024", "512", "89");
-
-            EmailsList.Add(a1);
-            EmailsList.Add(a2);
-            //EmailsList.Add(a3);
-            //EmailsList.Add(a4);
-            //EmailsList.Add(a5);
+            IList<string> addressList = FileController.ReadEmailList();
 
             ChartsForm c = new ChartsForm();
             c.createMockChart();  //Creates the chart, for the moment is a mock
 
-            EmailsList.ForEach(d =>
+            for (int i = 0; i < addressList.Count; i++)
             {
-                SendEmail(d);
-                SaveDataTest(d);
-            });
+                Email email = new Email(addressList[i], "This is the last server usage report", "Test Mail Chart", "John", "Doe", "Chacón,", "486", "1024", "512", "89");
+
+                if (SendEmail(email)) //Email sent correctly
+                {
+                    SaveDataTest(email);
+                }
+            }
         }
 
-        private void SendEmail(Email d)
+        private bool SendEmail(Email d)
         {
+            bool resul = false;
+
             try
             {
                 MailMessage mail = new MailMessage();
@@ -74,10 +68,11 @@ namespace SPR.Jobs
                 mail.Attachments.Add(new Attachment("charts\\mockChart.jpg"));
 
                 SmtpClient.Port = 587;
-                SmtpClient.Credentials = new System.Net.NetworkCredential("xamorach@gmail.com", "changeForRealPass");
+                SmtpClient.Credentials = new System.Net.NetworkCredential("xamorach@gmail.com", "Mesopotamia82!");
                 SmtpClient.EnableSsl = true;
 
                 SmtpClient.Send(mail);
+                resul = true;
                 Console.WriteLine(FileController.writeDataIntoALog("MAIL SENT TO " + d.EmailAddress, FileController.fileStr));
             }
             catch (Exception e)
@@ -87,7 +82,10 @@ namespace SPR.Jobs
                 sb.Append(e.StackTrace);
                 FileController.writeDataIntoALog(sb.ToString(), FileController.fileStr);
                 Console.WriteLine(e.Message);
+                resul = false;
             }
+
+            return resul;
         }
 
         private List<Object> GetServerPerformance()
@@ -103,25 +101,6 @@ namespace SPR.Jobs
             using (var ctxt = new BS_SPR_DB_Entities())
             {
                 ctxt.insertEmail(e.surname1, e.Name, e.EmailAddress, e.Subject, e.Body, e.CPU, e.RAM, e.IO_Disk, e.IIS_Sessions);
-
-                //entity.Emails.Add(e);
-                //foreach (var item in entity.GetValidationErrors())
-                //{
-                //    Console.WriteLine(FileController.writeDataIntoALog(item.ValidationErrors.ToString(), FileController.fileStr));
-                //    Console.WriteLine(FileController.writeDataIntoALog(item.ValidationErrors., FileController.fileStr));
-                //    Console.WriteLine(FileController.writeDataIntoALog(item.ValidationErrors.ToString(), FileController.fileStr));
-                //}
-                //entity.SaveChanges();
-
-                //Inner Exception 1:
-                //UpdateException: Se produjo un error mientras se actualizaban las entradas.
-                //Vea la excepción interna para obtener detalles.
-
-                //Inner Exception 2:
-                //SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Emails_Receivers".
-                //The conflict occurred in database "BS_SRVReportings_DB", table "dbo.Receivers", column 'Receiver_ID'.
-                //The statement has been terminated.
-
             }
 
         }
