@@ -1,5 +1,6 @@
 ﻿using Quartz.Impl;
 using SPR.Hosts;
+using System.Configuration;
 using Topshelf;
 
 namespace SPR.Service.ConfigureServcie
@@ -14,7 +15,7 @@ namespace SPR.Service.ConfigureServcie
                 config.RunAsNetworkService();
                 config.SetServiceName(typeof(Program).Namespace);
                 config.SetDisplayName(typeof(Program).Namespace);
-                config.SetDescription("Performance Report email service");
+                config.SetDescription(ConfigurationManager.AppSettings["performanceConfiguration"]);
                 config.Service<ISelfHostService>(service =>
                 {
                     service.ConstructUsing(s => new SelfHostService(StdSchedulerFactory.GetDefaultScheduler()));

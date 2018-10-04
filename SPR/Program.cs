@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SPR.Service.ConfigureServcie;
+﻿using SPR.Controller;
+using System;
 
 namespace SPR
 {
@@ -12,6 +8,8 @@ namespace SPR
         static void Main(string[] args)
         {
             Service.ConfigureServcie.ConfigureService.Configure();
+            FileController.createLogFile();
+            //Console.WriteLine(FileController.writeDataIntoALog("SERVICE HAS BEEN LAUNCHED", FileController.fileStr));
         }
     }
 }

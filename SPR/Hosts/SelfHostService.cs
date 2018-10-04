@@ -39,9 +39,11 @@ namespace SPR.Hosts
             var trigger =
                 TriggerBuilder.Create()
                 .WithIdentity("EmailJob")
+                
                 //.WithCronSchedule("0 0 0 1/1 * ? *") //Cron expression, it will be start at 12pm, use http://www.cronmaker.com to generate it
                 .WithCronSchedule("	0 0/3 * 1/1 * ? *") //Every three minutes
                 //.WithCronSchedule("0 0 / 5 * 1/1 * ? *")  //Test for each 5 mins  //TODO: Continue here!!! Check that the service is launched
+                //.WithCronSchedule(" 0 0 12 1/20 * ? *")       //Every 20 minutes          
                 .StartAt(DateTimeOffset.FromUnixTimeSeconds(1)) //start inmediatly
                 .Build();
             this.scheduler.ScheduleJob(jobDetail, trigger);
@@ -55,7 +57,7 @@ namespace SPR.Hosts
 
         public void Stop()
         {
-            #region Remove this part, it's just a test    
+            #region Show that the services has been stopped  
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(FileController.writeDataIntoALog("SERVICE HAS BEEN STOPED", FileController.fileStr));

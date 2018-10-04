@@ -1,10 +1,12 @@
-﻿using Quartz;
+﻿using Microsoft.Exchange.WebServices.Data;
+using Quartz;
 using SPR.BD;
 using SPR.Controller;
 using SPR.Forms;
 using SPR.Model;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
@@ -16,15 +18,13 @@ namespace SPR.Jobs
     {
         public void Execute(IJobExecutionContext context)
         {
-            FileController.createLogFile();
 
-            #region Test  
+            #region Console initial message 
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(FileController.writeDataIntoALog("SERVICE HAS BEEN LAUNCHED", FileController.fileStr));
             Console.WriteLine(FileController.writeDataIntoALog("SENDING MAILS...", FileController.fileStr));
             Console.ResetColor();
-            #endregion end Test   
+            #endregion 
 
             IList<string> addressList = FileController.ReadEmailList();
 
@@ -40,8 +40,71 @@ namespace SPR.Jobs
                     SaveDataTest(email);
                 }
             }
+
         }
 
+        #region Send emails using the Outlook client.
+        //private bool SendEmailUsingOutlook(Email email)
+        //{
+        //    try
+        //    {
+        //        Microsoft.Office.Interop.Outlook.Application app = new Microsoft.Office.Interop.Outlook.Application();
+        //        Microsoft.Office.Interop.Outlook.MailItem mailItem = app.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
+        //        mailItem.Subject = "This is the subject II";
+        //        mailItem.To = "javier.mora@dxcfds.com";
+        //        mailItem.Body = "This is the message. II";
+        //        string sDisplayName = "MyAttachment";
+        //        int iPosition = (int)mailItem.Body.Length + 1;
+        //        int iAttachType = (int)Microsoft.Office.Interop.Outlook.OlAttachmentType.olByValue;
+        //        mailItem.Attachments.Add($"C:\\Users\\Javi\\source\\repos\\SPR\\SPR\\bin\\Debug\\charts\\mockChart.jpg", iAttachType, iPosition, sDisplayName);
+        //        mailItem.Importance = Microsoft.Office.Interop.Outlook.OlImportance.olImportanceHigh;
+        //        mailItem.Display(false);
+        //        mailItem.Send();
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        StringBuilder sb = new StringBuilder();
+        //        sb.Append(ex.Message);
+        //        sb.Append(ex.StackTrace);
+        //        FileController.writeDataIntoALog(sb.ToString(), FileController.fileStr);
+        //        Console.WriteLine(ex.Message);
+        //        return false;
+        //    }
+
+        //}
+        #endregion
+
+        #region Send email using an Exchange server
+        //private bool sendemailExchange(Email e)
+        //{
+        //    try
+        //    {
+        //        var ev = ExchangeVersion.Exchange2007_SP1;
+        //        var es = new ExchangeService(ev);
+        //        es.Credentials = new NetworkCredential("esfds\\59001624", "excelsior82!");
+        //        es.Url = new Uri($"https://itrmt-pexc01.esfds.net:444/ews/services.wsdl");
+
+        //        EmailMessage message = new EmailMessage(es);
+        //        message.Subject = "test subject using Exchange";
+        //        message.Body = "test body using Exchange";
+        //        message.ToRecipients.Add(e.EmailAddress.Trim());
+        //        message.Send();
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        StringBuilder sb = new StringBuilder();
+        //        sb.Append(ex.Message);
+        //        sb.Append(ex.StackTrace);
+        //        FileController.writeDataIntoALog(sb.ToString(), FileController.fileStr);
+        //        Console.WriteLine(ex.Message);
+        //        return false;
+        //    }
+        //}
+        #endregion
+
+        #region Send email using a simple SMPT .net client
         private bool SendEmail(Email d)
         {
             bool resul = false;
@@ -65,10 +128,11 @@ namespace SPR.Jobs
                 htmlView.LinkedResources.Add(linkedImg);
                 mail.AlternateViews.Add(htmlView);
 
-                mail.Attachments.Add(new Attachment("charts\\mockChart.jpg"));
+                mail.Attachments.Add(new System.Net.Mail.Attachment("charts\\mockChart.jpg"));
 
+                SmtpClient.UseDefaultCredentials = false;
                 SmtpClient.Port = 587;
-                SmtpClient.Credentials = new System.Net.NetworkCredential("blablabla@bla.com", "CHangeFoRRealPass");
+                SmtpClient.Credentials = new NetworkCredential("xamorach@gmail.com", "Mesopotamia82!");
                 SmtpClient.EnableSsl = true;
 
                 SmtpClient.Send(mail);
@@ -87,7 +151,10 @@ namespace SPR.Jobs
 
             return resul;
         }
+        #endregion
 
+
+        //TODO: Set into another job
         private List<Object> GetServerPerformance()
         {
             //TODO: Get server performance values
@@ -95,7 +162,7 @@ namespace SPR.Jobs
             return null;
         }
 
-        //Test method
+
         private void SaveDataTest(Email e)
         {
             using (var ctxt = new BS_SPR_DB_Entities())

@@ -1,6 +1,6 @@
-﻿using SPR.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Text;
 
@@ -17,7 +17,11 @@ namespace SPR.Controller
         public static void createLogFile()
         {
             Directory.CreateDirectory("log");
-            File.Create(fileStr).Close();
+
+            if (!File.Exists(fileStr))
+            {
+                File.Create(fileStr).Close();
+            }
         }
 
         public static string writeDataIntoALog(string str, string fileStr)
@@ -41,7 +45,7 @@ namespace SPR.Controller
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Cannot open or create the log file.");
+                Console.WriteLine(ConfigurationManager.AppSettings["cannotOpenLogFile"]);
                 Console.WriteLine(ex.Message);
                 return ex.Message;
 
