@@ -132,7 +132,7 @@ namespace SPR.Jobs
 
                 SmtpClient.UseDefaultCredentials = false;
                 SmtpClient.Port = 587;
-                SmtpClient.Credentials = new NetworkCredential("xamorach@gmail.com", "Xsw2dcVfr4gm82!");
+
                //SmtpClient.Credentials = new NetworkCredential("anEmail@fake.es", "aFakePassword");
                 SmtpClient.EnableSsl = true;
 
