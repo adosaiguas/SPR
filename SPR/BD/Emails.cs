@@ -18,8 +18,5 @@ namespace SPR.BD
         public string Receiver_EmailAddress { get; set; }
         public string Receiver_EmailSubject { get; set; }
         public string Receiver_EmailBody { get; set; }
-    
-        public virtual ServerPerformances ServerPerformances { get; set; }
-        public virtual Receivers Receivers { get; set; }
     }
 }

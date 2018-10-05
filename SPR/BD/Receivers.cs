@@ -17,7 +17,5 @@ namespace SPR.BD
         public System.Guid Receiver_ID { get; set; }
         public string Receiver_LastName { get; set; }
         public string Receiver_FirstName { get; set; }
-    
-        public virtual Emails Emails { get; set; }
     }
 }

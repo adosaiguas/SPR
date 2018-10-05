@@ -95,25 +95,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\FileController.cs" />
     <Compile Include="BD\Emails.cs">
-      <DependentUpon>EntitySPRModel.tt</DependentUpon>
+      <DependentUpon>SPRModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="BD\EntitySPRModel.Context.cs">
+    <Compile Include="BD\Receivers.cs">
+      <DependentUpon>SPRModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BD\ServerPerformances.cs">
+      <DependentUpon>SPRModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BD\SPRModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EntitySPRModel.Context.tt</DependentUpon>
+      <DependentUpon>SPRModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="BD\EntitySPRModel.cs">
+    <Compile Include="BD\SPRModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EntitySPRModel.tt</DependentUpon>
+      <DependentUpon>SPRModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="BD\EntitySPRModel.Designer.cs">
+    <Compile Include="BD\SPRModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EntitySPRModel.edmx</DependentUpon>
+      <DependentUpon>SPRModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Controller\FileController.cs" />
     <Compile Include="Forms\ChartsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,31 +139,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="BD\Receivers.cs">
-      <DependentUpon>EntitySPRModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BD\ServerPerformances.cs">
-      <DependentUpon>EntitySPRModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Service\ConfigureServcie\ConfigureService.cs" />
-    <Compile Include="BD\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>EntitySPRModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BD\sp_helpdiagrams_Result.cs">
-      <DependentUpon>EntitySPRModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BD\sysdiagrams.cs">
-      <DependentUpon>EntitySPRModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="BD\EntitySPRModel.edmx">
+    <EntityDeploy Include="BD\SPRModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>EntitySPRModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>SPRModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="BD\EntitySPRModel.edmx.diagram">
-      <DependentUpon>EntitySPRModel.edmx</DependentUpon>
+    <None Include="BD\SPRModel.edmx.diagram">
+      <DependentUpon>SPRModel.edmx</DependentUpon>
     </None>
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
@@ -174,15 +165,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BD\EntitySPRModel.Context.tt">
+    <Content Include="BD\SPRModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EntitySPRModel.edmx</DependentUpon>
-      <LastGenOutput>EntitySPRModel.Context.cs</LastGenOutput>
+      <DependentUpon>SPRModel.edmx</DependentUpon>
+      <LastGenOutput>SPRModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="BD\EntitySPRModel.tt">
+    <Content Include="BD\SPRModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EntitySPRModel.edmx</DependentUpon>
-      <LastGenOutput>EntitySPRModel.cs</LastGenOutput>
+      <DependentUpon>SPRModel.edmx</DependentUpon>
+      <LastGenOutput>SPRModel.cs</LastGenOutput>
     </Content>
     <Content Include="quartz_jobs.xml" />
   </ItemGroup>

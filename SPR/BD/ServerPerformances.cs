@@ -19,7 +19,5 @@ namespace SPR.BD
         public string ServerPerformance_RAM { get; set; }
         public string ServerPerformance_IO_DISK { get; set; }
         public string ServerPerformance_IIS_Sessions { get; set; }
-    
-        public virtual Emails Emails { get; set; }
     }
 }
