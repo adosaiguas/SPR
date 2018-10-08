@@ -95,6 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BD\BdControlErrors\BDError.cs" />
     <Compile Include="BD\Emails.cs">
       <DependentUpon>SPRModel.tt</DependentUpon>
     </Compile>

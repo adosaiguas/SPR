@@ -35,7 +35,7 @@ namespace SPR.Jobs
             {
                 Email email = new Email(addressList[i], "This is the last server usage report", "Test Mail Chart", "John", "Doe", "Chacón,", "486", "1024", "512", "89");
 
-                if (SendEmail(email)) //Email sent correctly
+                if (SendEmail(email)) 
                 {
                     SaveDataTest(email);
                 }
@@ -133,7 +133,8 @@ namespace SPR.Jobs
                 SmtpClient.UseDefaultCredentials = false;
                 SmtpClient.Port = 587;
 
-               //SmtpClient.Credentials = new NetworkCredential("anEmail@fake.es", "aFakePassword");
+                SmtpClient.Credentials = new NetworkCredential("xamorach@gmail.com", "Xsw2dcVfr4gm82!");
+                //SmtpClient.Credentials = new NetworkCredential("anEmail@fake.es", "aFakePassword");
                 SmtpClient.EnableSsl = true;
 
                 SmtpClient.Send(mail);
@@ -165,7 +166,7 @@ namespace SPR.Jobs
 
 
         private void SaveDataTest(Email e)
-        {
+        {      
             using (var ctxt = new BD_SPR_BSEntities())
             {
                 ctxt.insertEmail(e.surname1, e.Name, e.EmailAddress, e.Subject, e.Body, e.CPU, e.RAM, e.IO_Disk, e.IIS_Sessions);

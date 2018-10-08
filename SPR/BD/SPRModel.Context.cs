@@ -9,11 +9,14 @@
 
 namespace SPR.BD
 {
+    using SPR.Controller;
     using System;
+    using System.Data;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Data.Objects;
     using System.Data.Objects.DataClasses;
+    using System.Data.SqlClient;
     using System.Linq;
     
     public partial class BD_SPR_BSEntities : DbContext
@@ -34,6 +37,8 @@ namespace SPR.BD
     
         public virtual int insertEmail(string lastName, string firstName, string emailAddress, string emailSubject, string emailBody, string cPU, string rAM, string iO_Disk, string iIS_Sessions)
         {
+            int result = 0;
+
             var lastNameParameter = lastName != null ?
                 new ObjectParameter("lastName", lastName) :
                 new ObjectParameter("lastName", typeof(string));
@@ -69,8 +74,21 @@ namespace SPR.BD
             var iIS_SessionsParameter = iIS_Sessions != null ?
                 new ObjectParameter("IIS_Sessions", iIS_Sessions) :
                 new ObjectParameter("IIS_Sessions", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("insertEmail", lastNameParameter, firstNameParameter, emailAddressParameter, emailSubjectParameter, emailBodyParameter, cPUParameter, rAMParameter, iO_DiskParameter, iIS_SessionsParameter);
+            try
+            {
+               result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("insertEmail", lastNameParameter, 
+                    firstNameParameter, emailAddressParameter, emailSubjectParameter, emailBodyParameter,
+                    cPUParameter, rAMParameter, iO_DiskParameter, iIS_SessionsParameter);
+            }
+            catch (EntityException _ex)
+            {
+                SqlException ex = ((SqlException)_ex.InnerException);
+                String msg = BdControlErrors.BDError.ControlError(ex);
+                FileController.writeDataIntoALog(msg, FileController.fileStr);
+                return 0;
+            }
+
+            return result;           
         }
     }
 }
