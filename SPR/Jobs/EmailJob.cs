@@ -33,14 +33,17 @@ namespace SPR.Jobs
 
             for (int i = 0; i < addressList.Count; i++)
             {
-                Email email = new Email(addressList[i], "This is the last server usage report", "Test Mail Chart", "John", "Doe", "Chacón,", "486", "1024", "512", "89");
+                //Email email = new Email(addressList[i], "This is the last server usage report", "Test Mail Chart",
+                //"John", "Doe", "Chacón,", "486", "1024", "512", "89");
 
-                if (SendEmail(email)) 
-                {
-                    SaveDataTest(email);
-                }
+                //using (var ctxt = new BD.DbContext())
+                //{
+                //    ctxt.Database.CreateIfNotExists();
+
+                //    SendEmail(email);
+                //    SaveData(email, ctxt);
+                //}
             }
-
         }
 
         #region Send emails using the Outlook client.
@@ -104,56 +107,56 @@ namespace SPR.Jobs
         //}
         #endregion
 
-        #region Send email using a simple SMPT .net client
-        private bool SendEmail(Email d)
-        {
-            bool resul = false;
+        //#region Send email using a simple SMPT .net client
+        //private bool SendEmail(Email d)
+        //{
+        //    bool resul = false;
 
-            try
-            {
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpClient = new SmtpClient("smtp.gmail.com");
-                mail.From = new MailAddress(d.EmailAddress);
-                mail.To.Add(d.EmailAddress);
-                mail.Subject = d.Subject;
-                LinkedResource linkedImg = new LinkedResource(@"charts\\mockChart.jpg");
-                linkedImg.ContentId = "mockChart";
-                linkedImg.ContentType = new ContentType(MediaTypeNames.Image.Jpeg);
+        //    try
+        //    {
+        //        MailMessage mail = new MailMessage();
+        //        SmtpClient SmtpClient = new SmtpClient("smtp.gmail.com");
+        //        mail.From = new MailAddress(d.EmailAddress);
+        //        mail.To.Add(d.EmailAddress);
+        //        mail.Subject = d.Subject;
+        //        LinkedResource linkedImg = new LinkedResource(@"charts\\mockChart.jpg");
+        //        linkedImg.ContentId = "mockChart";
+        //        linkedImg.ContentType = new ContentType(MediaTypeNames.Image.Jpeg);
 
-                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(
-                    "Dear Mr/Ms " + d.Name + " " + d.surname1 +
-                    "</br></br>" + d.Body + "\n <img src=charts\\mockChart.jpg>",
-                    null, "text/html");
+        //        AlternateView htmlView = AlternateView.CreateAlternateViewFromString(
+        //            "Dear Mr/Ms " + d.Name + " " + d.surname1 +
+        //            "</br></br>" + d.Body + "\n <img src=charts\\mockChart.jpg>",
+        //            null, "text/html");
 
-                htmlView.LinkedResources.Add(linkedImg);
-                mail.AlternateViews.Add(htmlView);
+        //        htmlView.LinkedResources.Add(linkedImg);
+        //        mail.AlternateViews.Add(htmlView);
 
-                mail.Attachments.Add(new System.Net.Mail.Attachment("charts\\mockChart.jpg"));
+        //        mail.Attachments.Add(new System.Net.Mail.Attachment("charts\\mockChart.jpg"));
 
-                SmtpClient.UseDefaultCredentials = false;
-                SmtpClient.Port = 587;
+        //        SmtpClient.UseDefaultCredentials = false;
+        //        SmtpClient.Port = 587;
 
-                SmtpClient.Credentials = new NetworkCredential("xamorach@gmail.com", "Xsw2dcVfr4gm82!");
-                //SmtpClient.Credentials = new NetworkCredential("anEmail@fake.es", "aFakePassword");
-                SmtpClient.EnableSsl = true;
+        //        SmtpClient.Credentials = new NetworkCredential("xamorach@gmail.com", "Xsw2dcVfr4gm82!");
+        //        //SmtpClient.Credentials = new NetworkCredential("anEmail@fake.es", "aFakePassword");
+        //        SmtpClient.EnableSsl = true;
 
-                SmtpClient.Send(mail);
-                resul = true;
-                Console.WriteLine(FileController.writeDataIntoALog("MAIL SENT TO " + d.EmailAddress, FileController.fileStr));
-            }
-            catch (Exception e)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append(e.Message);
-                sb.Append(e.StackTrace);
-                FileController.writeDataIntoALog(sb.ToString(), FileController.fileStr);
-                Console.WriteLine(e.Message);
-                resul = false;
-            }
+        //        SmtpClient.Send(mail);
+        //        resul = true;
+        //        Console.WriteLine(FileController.writeDataIntoALog("MAIL SENT TO " + d.EmailAddress, FileController.fileStr));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        StringBuilder sb = new StringBuilder();
+        //        sb.Append(e.Message);
+        //        sb.Append(e.StackTrace);
+        //        FileController.writeDataIntoALog(sb.ToString(), FileController.fileStr);
+        //        Console.WriteLine(e.Message);
+        //        resul = false;
+        //    }
 
-            return resul;
-        }
-        #endregion
+        //    return resul;
+        //}
+        //#endregion
 
 
         //TODO: Set into another job
@@ -164,14 +167,11 @@ namespace SPR.Jobs
             return null;
         }
 
+        //private void SaveData(Email e, BD_SPR_BSEntities ctxt)
+        //{                 
+        //   //ctxt.insertEmail(e.surname1, e.Name, e.EmailAddress, e.Subject, 
+        //   //    e.Body, e.CPU, e.RAM, e.IO_Disk, e.IIS_Sessions);
 
-        private void SaveDataTest(Email e)
-        {      
-            using (var ctxt = new BD_SPR_BSEntities())
-            {
-                ctxt.insertEmail(e.surname1, e.Name, e.EmailAddress, e.Subject, e.Body, e.CPU, e.RAM, e.IO_Disk, e.IIS_Sessions);
-            }
-
-        }
+        //}
     }
 }

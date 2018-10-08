@@ -41,8 +41,11 @@
     <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.dll</HintPath>
@@ -69,7 +72,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -95,31 +97,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BD\BdControlErrors\BDError.cs" />
-    <Compile Include="BD\Emails.cs">
-      <DependentUpon>SPRModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BD\Receivers.cs">
-      <DependentUpon>SPRModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BD\ServerPerformances.cs">
-      <DependentUpon>SPRModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BD\SPRModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SPRModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BD\SPRModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SPRModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BD\SPRModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SPRModel.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="BD\BdControlError\BdError.cs" />
+    <Compile Include="BD\DbContext.cs" />
     <Compile Include="Controller\FileController.cs" />
     <Compile Include="Forms\ChartsForm.cs">
       <SubType>Form</SubType>
@@ -130,6 +109,11 @@
     <Compile Include="Hosts\ISelfHostService.cs" />
     <Compile Include="Hosts\SelfHostService.cs" />
     <Compile Include="Jobs\EmailJob.cs" />
+    <Compile Include="Migrations\201810081654192_BS_SPR_Model.cs" />
+    <Compile Include="Migrations\201810081654192_BS_SPR_Model.Designer.cs">
+      <DependentUpon>201810081654192_BS_SPR_Model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Receiver.cs" />
     <Compile Include="Model\Email.cs" />
     <Compile Include="Model\ServerPerformance.cs" />
@@ -143,13 +127,8 @@
     <Compile Include="Service\ConfigureServcie\ConfigureService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <EntityDeploy Include="BD\SPRModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SPRModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="BD\SPRModel.edmx.diagram">
-      <DependentUpon>SPRModel.edmx</DependentUpon>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
     </None>
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
@@ -164,18 +143,11 @@
     <EmbeddedResource Include="Forms\ChartsForm.resx">
       <DependentUpon>ChartsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810081654192_BS_SPR_Model.resx">
+      <DependentUpon>201810081654192_BS_SPR_Model.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BD\SPRModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SPRModel.edmx</DependentUpon>
-      <LastGenOutput>SPRModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="BD\SPRModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SPRModel.edmx</DependentUpon>
-      <LastGenOutput>SPRModel.cs</LastGenOutput>
-    </Content>
     <Content Include="quartz_jobs.xml" />
   </ItemGroup>
   <ItemGroup>
