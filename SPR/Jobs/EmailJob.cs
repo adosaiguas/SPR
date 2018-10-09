@@ -4,6 +4,7 @@ using SPR.BD;
 using SPR.Controller;
 using SPR.Forms;
 using SPR.Model;
+using SPR.Service;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -29,20 +30,37 @@ namespace SPR.Jobs
             IList<string> addressList = FileController.ReadEmailList();
 
             ChartsForm c = new ChartsForm();
-            c.createMockChart();  //Creates the chart, for the moment is a mock
+            c.createMockChart();  //Creates the chart, for the moment is a fake
+
+            Email e = new Email();
+            e.Body = "This is a test body";
+            e.Subject = "This is a test subject";
+            
+            //TODO: This data will be obtained from the CSV file, such the email addres
+            Receiver r = new Receiver();
+            r.Name = "John";
+            r.surname1 = "Doe";
+
+            ServerPerformance s = new ServerPerformance();
+            s.CPU = 486;
+            s.RAM = 8;
+            s.IO_Disk = 1024;
+            s.IIS_Sessions = 28;
 
             for (int i = 0; i < addressList.Count; i++)
-            {
-                //Email email = new Email(addressList[i], "This is the last server usage report", "Test Mail Chart",
-                //"John", "Doe", "Chacón,", "486", "1024", "512", "89");
-
-                //using (var ctxt = new BD.DbContext())
-                //{
-                //    ctxt.Database.CreateIfNotExists();
-
-                //    SendEmail(email);
-                //    SaveData(email, ctxt);
-                //}
+            { 
+                e.EmailAddress = addressList[i];
+                using (var ctxt = new SPRContext())
+                {
+                    ctxt.Database.CreateIfNotExists();
+                    if (SendEmail(e, r))
+                    {
+                        ctxt.Emails.Add(e);
+                        ctxt.Receivers.Add(r);
+                        ctxt.ServerPerformances.Add(s);
+                        ctxt.SaveChanges();
+                    }   
+                }
             }
         }
 
@@ -107,56 +125,109 @@ namespace SPR.Jobs
         //}
         #endregion
 
-        //#region Send email using a simple SMPT .net client
-        //private bool SendEmail(Email d)
-        //{
-        //    bool resul = false;
+        #region Send mails as the rest of the MONBPV01D server projects
+        private bool SendMail(Email e)
+        {
+            bool resul;
+            try
+            {
+                MailMessage mail = new MailMessage();
 
-        //    try
-        //    {
-        //        MailMessage mail = new MailMessage();
-        //        SmtpClient SmtpClient = new SmtpClient("smtp.gmail.com");
-        //        mail.From = new MailAddress(d.EmailAddress);
-        //        mail.To.Add(d.EmailAddress);
-        //        mail.Subject = d.Subject;
-        //        LinkedResource linkedImg = new LinkedResource(@"charts\\mockChart.jpg");
-        //        linkedImg.ContentId = "mockChart";
-        //        linkedImg.ContentType = new ContentType(MediaTypeNames.Image.Jpeg);
+                mail.From = new MailAddress(e.EmailAddress);
+                mail.Subject = e.Subject;
+                mail.Body = e.Body;
+                mail.IsBodyHtml = true;
+                mail.Priority = MailPriority.High;
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "localhost";
+                smtp.Port = 25;
+                smtp.UseDefaultCredentials = true;
 
-        //        AlternateView htmlView = AlternateView.CreateAlternateViewFromString(
-        //            "Dear Mr/Ms " + d.Name + " " + d.surname1 +
-        //            "</br></br>" + d.Body + "\n <img src=charts\\mockChart.jpg>",
-        //            null, "text/html");
+                LinkedResource linkedImg = new LinkedResource(@"charts\\mockChart.jpg");
+                linkedImg.ContentId = "mockChart";
+                linkedImg.ContentType = new ContentType(MediaTypeNames.Image.Jpeg);
 
-        //        htmlView.LinkedResources.Add(linkedImg);
-        //        mail.AlternateViews.Add(htmlView);
+                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(
+                    "Dear Mr/Ms " + "Test_Name" + " " + "Test_Surname" +
+                    "</br></br>" + e.Body + "\n <img src=charts\\mockChart.jpg>",
+                    null, "text/html");
 
-        //        mail.Attachments.Add(new System.Net.Mail.Attachment("charts\\mockChart.jpg"));
+                htmlView.LinkedResources.Add(linkedImg);
+                mail.AlternateViews.Add(htmlView);
 
-        //        SmtpClient.UseDefaultCredentials = false;
-        //        SmtpClient.Port = 587;
+                mail.Attachments.Add(new System.Net.Mail.Attachment("charts\\mockChart.jpg"));
+                /*smtp.Credentials = new System.Net.NetworkCredential
+                ("username", "password");// Enter seders User name and password*/
+                //smtp.EnableSsl = true;
+                smtp.Send(mail);
+                resul = true;
+                Console.WriteLine(FileController.writeDataIntoALog("MAIL SENT TO " + e.EmailAddress, FileController.fileStr));
 
-        //        SmtpClient.Credentials = new NetworkCredential("xamorach@gmail.com", "Xsw2dcVfr4gm82!");
-        //        //SmtpClient.Credentials = new NetworkCredential("anEmail@fake.es", "aFakePassword");
-        //        SmtpClient.EnableSsl = true;
+            }
+            catch (Exception ex)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(ex.Message);
+                sb.Append(ex.StackTrace);
+                FileController.writeDataIntoALog(sb.ToString(), FileController.fileStr);
+                Console.WriteLine(ex.Message);
+                resul = false;
+            }
+            return resul;
+    }
+        #endregion
 
-        //        SmtpClient.Send(mail);
-        //        resul = true;
-        //        Console.WriteLine(FileController.writeDataIntoALog("MAIL SENT TO " + d.EmailAddress, FileController.fileStr));
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        StringBuilder sb = new StringBuilder();
-        //        sb.Append(e.Message);
-        //        sb.Append(e.StackTrace);
-        //        FileController.writeDataIntoALog(sb.ToString(), FileController.fileStr);
-        //        Console.WriteLine(e.Message);
-        //        resul = false;
-        //    }
+        #region Send email using a simple SMPT .net client
 
-        //    return resul;
-        //}
-        //#endregion
+        private bool SendEmail(Email d, Receiver r)
+        {
+            bool resul = false;
+
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpClient = new SmtpClient("smtp.gmail.com");
+                mail.From = new MailAddress(d.EmailAddress);
+                mail.To.Add(d.EmailAddress);
+                mail.Subject = d.Subject;
+                LinkedResource linkedImg = new LinkedResource(@"charts\\mockChart.jpg");
+                linkedImg.ContentId = "mockChart";
+                linkedImg.ContentType = new ContentType(MediaTypeNames.Image.Jpeg);
+
+                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(
+                    "Dear Mr/Ms " + r.Name + " " + r.surname1 +
+                    "</br></br>" + d.Body + "\n <img src=charts\\mockChart.jpg>",
+                    null, "text/html");
+
+                htmlView.LinkedResources.Add(linkedImg);
+                mail.AlternateViews.Add(htmlView);
+
+                mail.Attachments.Add(new System.Net.Mail.Attachment("charts\\mockChart.jpg"));
+
+                SmtpClient.UseDefaultCredentials = false;
+                SmtpClient.Port = 587;
+
+                SmtpClient.Credentials = new NetworkCredential("xamorach@gmail.com", "82Antananaribo!");
+                //SmtpClient.Credentials = new NetworkCredential("anEmail@fake.es", "aFakePassword");
+                SmtpClient.EnableSsl = true;
+
+                SmtpClient.Send(mail);
+                resul = true;
+                Console.WriteLine(FileController.writeDataIntoALog("MAIL SENT TO " + d.EmailAddress, FileController.fileStr));
+            }
+            catch (Exception e)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(e.Message);
+                sb.Append(e.StackTrace);
+                FileController.writeDataIntoALog(sb.ToString(), FileController.fileStr);
+                Console.WriteLine(e.Message);
+                resul = false;
+            }
+
+            return resul;
+        }
+        #endregion
 
 
         //TODO: Set into another job
@@ -166,6 +237,8 @@ namespace SPR.Jobs
 
             return null;
         }
+
+
 
         //private void SaveData(Email e, BD_SPR_BSEntities ctxt)
         //{                 

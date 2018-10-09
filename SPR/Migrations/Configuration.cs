@@ -5,14 +5,14 @@ namespace SPR.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<SPR.Service.EmailsContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<SPR.Service.SPRContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(SPR.Service.EmailsContext context)
+        protected override void Seed(SPR.Service.SPRContext context)
         {
             //  This method will be called after migrating to the latest version.
 

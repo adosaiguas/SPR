@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace SPR.Service
 {
-    class EmailsContext : DbContext
+    class SPRContext : DbContext
     {
         public DbSet<Email> Emails { get; set; }
         public DbSet<Receiver> Receivers { get; set; }
         public DbSet<ServerPerformance> ServerPerformances { get; set; }
 
-        public EmailsContext()
+        public SPRContext()
             : base("name=DefaultConnection")
         {
 

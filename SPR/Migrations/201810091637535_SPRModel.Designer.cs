@@ -7,13 +7,13 @@ namespace SPR.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class BS_SPR_Model : IMigrationMetadata
+    public sealed partial class SPRModel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(BS_SPR_Model));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SPRModel));
         
         string IMigrationMetadata.Id
         {
-            get { return "201810081654192_BS_SPR_Model"; }
+            get { return "201810091637535_SPRModel"; }
         }
         
         string IMigrationMetadata.Source

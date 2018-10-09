@@ -98,7 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BD\BdControlError\BdError.cs" />
-    <Compile Include="BD\DbContext.cs" />
+    <Compile Include="BD\SPRContext.cs" />
     <Compile Include="Controller\FileController.cs" />
     <Compile Include="Forms\ChartsForm.cs">
       <SubType>Form</SubType>
@@ -109,9 +109,9 @@
     <Compile Include="Hosts\ISelfHostService.cs" />
     <Compile Include="Hosts\SelfHostService.cs" />
     <Compile Include="Jobs\EmailJob.cs" />
-    <Compile Include="Migrations\201810081654192_BS_SPR_Model.cs" />
-    <Compile Include="Migrations\201810081654192_BS_SPR_Model.Designer.cs">
-      <DependentUpon>201810081654192_BS_SPR_Model.cs</DependentUpon>
+    <Compile Include="Migrations\201810091637535_SPRModel.cs" />
+    <Compile Include="Migrations\201810091637535_SPRModel.Designer.cs">
+      <DependentUpon>201810091637535_SPRModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Receiver.cs" />
@@ -143,8 +143,8 @@
     <EmbeddedResource Include="Forms\ChartsForm.resx">
       <DependentUpon>ChartsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810081654192_BS_SPR_Model.resx">
-      <DependentUpon>201810081654192_BS_SPR_Model.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810091637535_SPRModel.resx">
+      <DependentUpon>201810091637535_SPRModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
