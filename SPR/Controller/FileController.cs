@@ -14,9 +14,9 @@ namespace SPR.Controller
         ///  Creates a log file to record the user actions and events
         /// </summary>
         /// <returns>fileStr</returns>
-        public static void createLogFile()
+        public static void createLogFile(string dirString)
         {
-            Directory.CreateDirectory("log");
+            Directory.CreateDirectory(dirString);
 
             if (!File.Exists(fileStr))
             {
@@ -64,7 +64,9 @@ namespace SPR.Controller
         public static List<string> ReadEmailList()
         {
            List<string> emailList = new List<string>();
-           string[] textLines = File.ReadAllLines(@"c:\\testEmailsFile.csv");  //TODO: Change for real file with real emails
+           string fileName = "testEmailsFile.csv";
+           string[] textLines = File.ReadAllLines(
+               Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @".\Data", fileName));  //TODO: Change for real file with real emails
 
            foreach (var item in textLines)
            {

@@ -119,6 +119,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SPRModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Controller\ESARController.cs" />
     <Compile Include="Controller\FileController.cs" />
     <Compile Include="Forms\ChartsForm.cs">
       <SubType>Form</SubType>
@@ -128,6 +129,7 @@
     </Compile>
     <Compile Include="Hosts\ISelfHostService.cs" />
     <Compile Include="Hosts\SelfHostService.cs" />
+    <Compile Include="Interfaces\IEsarController.cs" />
     <Compile Include="Jobs\EmailJob.cs" />
     <Compile Include="Model\Receiver.cs" />
     <Compile Include="Model\Email.cs" />

@@ -133,6 +133,7 @@ namespace SPR.Jobs
                 SmtpClient.UseDefaultCredentials = false;
                 SmtpClient.Port = 587;
 
+               //TODO: Set with correct credentials
                //SmtpClient.Credentials = new NetworkCredential("anEmail@fake.es", "aFakePassword");
                 SmtpClient.EnableSsl = true;
 

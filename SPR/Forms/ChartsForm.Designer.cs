@@ -46,7 +46,8 @@
             this.chartName.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartName.Legends.Add(legend1);
-            this.chartName.Location = new System.Drawing.Point(12, 12);
+            this.chartName.Location = new System.Drawing.Point(16, 15);
+            this.chartName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chartName.Name = "chartName";
             series1.ChartArea = "ChartArea1";
             series1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
@@ -69,16 +70,17 @@
             this.chartName.Series.Add(series2);
             this.chartName.Series.Add(series3);
             this.chartName.Series.Add(series4);
-            this.chartName.Size = new System.Drawing.Size(551, 300);
+            this.chartName.Size = new System.Drawing.Size(735, 369);
             this.chartName.TabIndex = 0;
             this.chartName.Text = "chartCPU";
             // 
             // ChartsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.chartName);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ChartsForm";
             this.Text = "ChartCPU";
             this.Load += new System.EventHandler(this.ChartsForm_Load);

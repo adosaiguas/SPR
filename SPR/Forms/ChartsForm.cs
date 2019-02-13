@@ -54,5 +54,6 @@ namespace SPR.Forms
             chartName.SaveImage("charts\\mockChart.jpg", ChartImageFormat.Jpeg);
 
         }
+
     }
 }
