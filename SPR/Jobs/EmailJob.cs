@@ -30,6 +30,7 @@ namespace SPR.Jobs
 
             ChartsForm c = new ChartsForm();
             c.createMockChart();  //Creates the chart, for the moment is a mock
+            List<object> serverPerformance = this.GetServerPerformance();
 
             for (int i = 0; i < addressList.Count; i++)
             {
@@ -112,7 +113,7 @@ namespace SPR.Jobs
             try
             {
                 MailMessage mail = new MailMessage();
-                SmtpClient SmtpClient = new SmtpClient("smtp.gmail.com");
+                SmtpClient SmtpClient = new SmtpClient("localhost");
                 mail.From = new MailAddress(d.EmailAddress);
                 mail.To.Add(d.EmailAddress);
                 mail.Subject = d.Subject;
@@ -131,11 +132,13 @@ namespace SPR.Jobs
                 mail.Attachments.Add(new System.Net.Mail.Attachment("charts\\mockChart.jpg"));
 
                 SmtpClient.UseDefaultCredentials = false;
-                SmtpClient.Port = 587;
-
-               //TODO: Set with correct credentials
-               //SmtpClient.Credentials = new NetworkCredential("anEmail@fake.es", "aFakePassword");
+                SmtpClient.Port = 465;
                 SmtpClient.EnableSsl = true;
+
+                //TODO: Set with correct credentials
+                SmtpClient.Credentials = new NetworkCredential("732765243e2226", "4d4a3ffce9fff5");
+                ServicePointManager.ServerCertificateValidationCallback =
+                    (sender, certificate, chain, sslPolicyErrors) => true;
 
                 SmtpClient.Send(mail);
                 resul = true;
@@ -160,6 +163,7 @@ namespace SPR.Jobs
         private List<Object> GetServerPerformance()
         {
             //TODO: Get server performance values
+            ESARController.Data();
 
             return null;
         }
@@ -169,7 +173,8 @@ namespace SPR.Jobs
         {
             using (var ctxt = new BD_SPR_BSEntities())
             {
-                ctxt.insertEmail(e.surname1, e.Name, e.EmailAddress, e.Subject, e.Body, e.CPU, e.RAM, e.IO_Disk, e.IIS_Sessions);
+                // TODO
+                //ctxt.insertEmail(e.surname1, e.Name, e.EmailAddress, e.Subject, e.Body, e.CPU, e.RAM, e.IO_Disk, e.IIS_Sessions);
             }
 
         }
